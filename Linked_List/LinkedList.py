@@ -1,5 +1,7 @@
 from locale import currency
 
+from numpy import empty
+
 
 class Node:
     def __init__(self, data):
@@ -13,30 +15,30 @@ class LinkedListWithTail:
         self.tail = None
         self.size = 0
 
-    def size(self):
+    def __len__(self):
         return self.size
 
     def empty(self):
-        if self.size == 0:
-            return True
-        return False
+        if self.head:
+            return False
+        return True
 
     def value_at(self, index):
         if index < 0 or index >= self.size:
             return IndexError('Index out of Bounds')
 
         current_node = self.head
-        i = 0
-        while i <= index:
+
+        for _ in range(index):
             current_node = self.head.next_node
-            i += 1
+
         return current_node.data
 
     def push_front(self, data):
         new_node = Node(data)
         if self.head:
             new_node.next_node = self.head
-            self.head = new_node.next_node
+            self.head = new_node
         else:
             self.head = new_node
             self.tail = new_node
@@ -63,16 +65,16 @@ class LinkedListWithTail:
         self.size += 1
 
     def pop_back(self):
-        if not self.tail:
+        if not self.head:
             print('List is empty cannot remove last value')
             return
 
         current_node = self.head
-        while current_node.next_node != self.tail:
+        while current_node.next_node.next_node:
             current_node = current_node.next_node
-
         result = self.tail.data
         self.tail = current_node
+        self.tail.next_node = None
         self.size -= 1
         return result
 
@@ -94,13 +96,12 @@ class LinkedListWithTail:
             self.push_back(data)
             return
 
-        i = 0
-        while i < index:
+        for _ in range(index-1):
             current_node = current_node.next_node
-            i += 1
 
         new_node.next_node = current_node.next_node
         current_node.next_node = new_node
+        self.size += 1
 
     def erase(self, index):
         current_node = self.head
@@ -113,17 +114,20 @@ class LinkedListWithTail:
             self.pop_back()
             return
 
-        i = 0
-        while i < index:
+        for _ in range(index-1):
             current_node = current_node.next_node
-            i += 1
-        self.size -= 1
 
-        current_node.next_node = (current_node.next_node).next_node
+        current_node.next_node = current_node.next_node.next_node
+
+        self.size -= 1
 
     def value_n_from_end(self, index):
         value = 0
         current_node = self.head
+
+        if index < 0 or index >= self.size:
+            return IndexError('Index out of Bounds')
+
         i = 0
         while i < index:
             current_node = current_node.next_node
@@ -136,9 +140,21 @@ class LinkedListWithTail:
         return value
 
     def reverse(self):
-        for i in range(self.size):
-            self.push_back(self.pop_front())
-            
+        if not self.head:
+            print('List is empty cannot reverse')
+            return
+
+        temp_tail = self.tail
+        while temp_tail != self.head:
+            front_node = self.head
+            self.head = self.head.next_node
+
+            front_node.next_node = temp_tail.next_node
+            temp_tail.next_node = front_node
+
+            if not front_node.next_node:
+                self.tail = front_node
+
     def remove_value(self, value):
         current_node = self.head
 
@@ -149,6 +165,57 @@ class LinkedListWithTail:
                 return
             current_node = current_node.next_node
             i += 1
-            
-        print('List does not have value specified')    
-        return
+
+        print('List does not have value specified')
+
+    def printList(self):
+        current_node = self.head
+        printArray = []
+        while current_node:
+            printArray.append(current_node.data)
+            current_node = current_node.next_node
+        print(printArray)
+
+
+if __name__ == '__main__':
+    listLink = LinkedListWithTail()
+
+    listLink.push_front(1)
+    listLink.push_front(2)
+    listLink.push_front(3)
+    listLink.push_front(4)
+    listLink.push_front(5)
+
+    listLink.printList()
+
+    listLink.pop_front()
+    listLink.pop_back()
+
+    listLink.printList()
+
+    listLink.insert(1, 7)
+    listLink.remove_value(2)
+
+    listLink.printList()
+
+    listLink.push_back(5)
+
+    listLink.printList()
+
+    listLink.reverse()
+
+    print(len(listLink))
+
+    listLink.printList()
+
+    print(listLink.back())
+
+    print(listLink.empty())
+
+    print(listLink.value_at(1))
+
+    listLink.erase(1)
+
+    listLink.printList()
+
+    print(listLink.value_n_from_end(2))
