@@ -21,7 +21,7 @@ class DynamicArray:
 
     def get(self, index):
         if index < 0 or index >= self.size:
-            return IndexError('Index out of Bounds')
+            raise IndexError("Index out of Bounds")
 
         return self.arr[index]
 
@@ -34,7 +34,7 @@ class DynamicArray:
 
     def insert(self, index, element):
         if index < 0 or index >= self.size:
-            return IndexError('Enter an Appropiate Index')
+            raise IndexError("Enter an Appropiate Index")
 
         if self.size == self.capacity:
             self._resize(2 * self.capacity)
@@ -50,7 +50,7 @@ class DynamicArray:
 
     def pop(self):
         if self.size == 0:
-            print('Array is Empty Cannot Remove Last Element')
+            print("Array is Empty Cannot Remove Last Element")
             return
 
         element = self.arr[self.size-1]
@@ -61,7 +61,7 @@ class DynamicArray:
 
     def removeAt(self, index):
         if self.size == 0:
-            print('Array is Empty Cannot Remove Last Element')
+            print("Array is Empty Cannot Remove Last Element")
             return
 
         if index == self.size-1:
@@ -70,7 +70,7 @@ class DynamicArray:
             return
 
         if index < 0 or index >= self.size:
-            return IndexError('Index out of Bounds')
+            return IndexError("Index out of Bounds")
 
         for i in range(index, self.size-1):
             self.arr[i] = self.arr[i+1]

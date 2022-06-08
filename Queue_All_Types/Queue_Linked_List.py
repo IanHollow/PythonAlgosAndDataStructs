@@ -40,7 +40,7 @@ class QueueLinkedList:
         print(printArray)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     q = QueueLinkedList()
 
     q.enqueue(20)

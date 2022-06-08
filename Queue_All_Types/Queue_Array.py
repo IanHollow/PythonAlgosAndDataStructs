@@ -16,7 +16,7 @@ class QueueArray:
 
     def enqueue(self, value):
         if self.full():
-            print('Queue Full')
+            print("Queue Full")
             return
 
         self.queue[self.rear] = value
@@ -26,7 +26,7 @@ class QueueArray:
 
     def dequeue(self):
         if self.empty():
-            print('Queue Empty')
+            print("Queue Empty")
             return
 
         value = self.queue[self.front]
@@ -42,7 +42,7 @@ class QueueArray:
         print(self.queue)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     q = QueueArray(4)
 
     q.enqueue(20)

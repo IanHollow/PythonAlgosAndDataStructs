@@ -1,8 +1,3 @@
-from locale import currency
-
-from numpy import empty
-
-
 class Node:
     def __init__(self, data):
         self.data = data
@@ -25,7 +20,7 @@ class LinkedListWithTail:
 
     def value_at(self, index):
         if index < 0 or index >= self.size:
-            return IndexError('Index out of Bounds')
+            raise IndexError("Index out of Bounds")
 
         current_node = self.head
 
@@ -46,7 +41,7 @@ class LinkedListWithTail:
 
     def pop_front(self):
         if not self.head:
-            print('List is empty cannot remove first value')
+            print("List is empty cannot remove first value")
             return
 
         result = self.head.data
@@ -66,7 +61,7 @@ class LinkedListWithTail:
 
     def pop_back(self):
         if not self.head:
-            print('List is empty cannot remove last value')
+            print("List is empty cannot remove last value")
             return
 
         current_node = self.head
@@ -126,7 +121,7 @@ class LinkedListWithTail:
         current_node = self.head
 
         if index < 0 or index >= self.size:
-            return IndexError('Index out of Bounds')
+            raise IndexError("Index out of Bounds")
 
         i = 0
         while i < index:
@@ -141,7 +136,7 @@ class LinkedListWithTail:
 
     def reverse(self):
         if not self.head:
-            print('List is empty cannot reverse')
+            print("List is empty cannot reverse")
             return
 
         temp_tail = self.tail
@@ -166,7 +161,7 @@ class LinkedListWithTail:
             current_node = current_node.next_node
             i += 1
 
-        print('List does not have value specified')
+        print("List does not have value specified")
 
     def printList(self):
         current_node = self.head
@@ -177,7 +172,7 @@ class LinkedListWithTail:
         print(printArray)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     listLink = LinkedListWithTail()
 
     listLink.push_front(1)
