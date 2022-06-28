@@ -79,7 +79,7 @@ class DynamicArray:
         self.size -= 1
 
     def find(self, element):
-        for i in range(len(self.arr)):
+        for i in range(self.size):
             if self.arr[i] == element:
                 return i
         return -1
