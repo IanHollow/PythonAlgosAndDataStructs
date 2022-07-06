@@ -1,10 +1,9 @@
 class MergeSort():
     def __init__(self, numbers: list):
         self.values = numbers
-        self.count = len(numbers)
 
     def sort(self) -> list:
-        self.merge_sort(0, self.count-1)
+        self.merge_sort(0, len(self.values)-1)
         return self.values
 
     def merge_sort(self, low: int, high: int) -> None:
@@ -21,33 +20,26 @@ class MergeSort():
         j = mid+1
 
         while i <= mid and j <= high:
-            if self.values[i] < self.values[j]:
+            if self.values[i] <= self.values[j]:
                 result.append(self.values[i])
                 i += 1
-            elif self.values[i] > self.values[j]:
+            else:
                 result.append(self.values[j])
                 j += 1
-            else:
-                if i <= j:
-                    result.append(self.values[i])
-                    i += 1
-                else:
-                    result.append(self.values[i])
-                    j += 1
 
         while i <= mid:
             result.append(self.values[i])
             i += 1
 
         while j <= high:
-            result.append(self.values[i])
+            result.append(self.values[j])
             j += 1
 
         for index in range(len(result)):
             self.values[low + index] = result[index]
 
 
-arr = [2, 5, 8, 2, 4, 5, 6, 6, 8, 1, 4, 5, 3, 5, 7, 7, 4, ]
+arr = [2, 5, 8, 2, 4, 5, 6, 6, 8, 1, 4, 5, 3, 5, 7, 7, 4]
 
 merged_list = MergeSort(arr)
 
