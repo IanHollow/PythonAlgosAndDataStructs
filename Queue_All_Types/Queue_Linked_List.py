@@ -20,6 +20,9 @@ class QueueLinkedList:
         self.tail = new_node
 
     def dequeue(self):
+        if self.head is None:
+            return None
+
         result = self.head
 
         self.head = self.head.next_node
