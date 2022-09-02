@@ -51,8 +51,34 @@ class Graph:
 
         return dfs_results
 
-    def search_DFS_iter(self):
-        pass
+    def search_DFS_iter(self, start_vertex) -> list:
+        stack = [start_vertex]
+        visited = [False] * len(self.graph)
+        dfs_result = []
+
+        for _ in range(len(self.graph)):
+            while len(stack) > 0 and visited[stack[len(stack)-1]]:
+                stack.pop()
+
+            if len(stack) == 0:
+                while visited[start_vertex]:
+                    start_vertex += 1
+                    if start_vertex > len(self.graph)-1:
+                        start_vertex = 0
+
+                stack.append(start_vertex)
+
+            start_vertex = stack.pop()
+            visited[start_vertex] = True
+            dfs_result.append(start_vertex)
+
+            current_node = self.graph[start_vertex]
+            while current_node is not None:
+                if not visited[current_node.data]:
+                    stack.append(current_node.data)
+                current_node = current_node.next
+
+        return dfs_result
 
     def search_BFS(self):
         pass
@@ -79,3 +105,5 @@ if __name__ == "__main__":
     graph.print_graph()
 
     print(graph.search_DFS_recur(4))
+
+    print(graph.search_DFS_iter(4))
