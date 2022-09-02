@@ -1,27 +1,55 @@
-class Node:
+class AdjNode:
     def __init__(self, data):
         self.data = data
         self.next = None
 
 
 class Graph:
-    def __init__(self):
-        self.graph = {}
+    def __init__(self, num: int):
+        self.graph = [None] * num
 
-    def add_node(self, node):
-        self.graph.setdefault(node)
+    def add_edge_direct(self, from_vertex: int, to_vertex: int):
+        if from_vertex > len(self.graph)-1 or to_vertex > len(self.graph)-1:
+            raise IndexError("to_vertex or from_vertex doesn't exist")
 
-    def add_edge(self, node1, node2):
-        node = Node(node1)
-        node.next = self.graph[node2]
-        self.graph[node2] = node
+        node = AdjNode(to_vertex)
+        node.next = self.graph[from_vertex]
+        self.graph[from_vertex] = node
 
-        node = Node(node2)
-        node.next = self.graph[node1]
-        self.graph[node1] = node
+    def add_edge_undirect(self, from_vertex: int, to_vertex: int):
+        if from_vertex > len(self.graph)-1 or to_vertex > len(self.graph)-1:
+            raise IndexError("to_vertex or from_vertex doesn't exist")
 
-    def search_DFS_recur(self):
-        pass
+        node = AdjNode(to_vertex)
+        node.next = self.graph[from_vertex]
+        self.graph[from_vertex] = node
+
+        node = AdjNode(from_vertex)
+        node.next = self.graph[to_vertex]
+        self.graph[to_vertex] = node
+
+    def search_DFS_recur(self, start_vertex: int) -> list:
+        visited = [False] * len(self.graph)
+        dfs_results = []
+
+        def dfs(start_vertex):
+            visited[start_vertex] = True
+            dfs_results.append(start_vertex)
+
+            current_node = self.graph[start_vertex]
+            while current_node is not None:
+                if not visited[current_node.data]:
+                    dfs(current_node.data)
+                current_node = current_node.next
+
+        for _ in range(len(self.graph)):
+            if start_vertex > len(self.graph)-1:
+                start_vertex = 0
+            if not visited[start_vertex]:
+                dfs(start_vertex)
+            start_vertex += 1
+
+        return dfs_results
 
     def search_DFS_iter(self):
         pass
@@ -30,30 +58,24 @@ class Graph:
         pass
 
     def print_graph(self):
-        arrow = "->"
-        linked_list = ""
-        for key in self.graph:
-            current_node = self.graph[key]
-            while current_node is not None:
-                linked_list += f" {arrow} {current_node.data}"
-                current_node = current_node.next
-            print(f"({key}){linked_list}")
+        for i in range(len(self.graph)):
+            current_node = self.graph[i]
             linked_list = ""
+            while current_node is not None:
+                linked_list += f" -> {current_node.data}"
+                current_node = current_node.next
+            print(f"({i}){linked_list}")
 
 
 if __name__ == "__main__":
-    graph = Graph()
-    graph.add_node(1)
-    graph.add_node(2)
-    graph.add_node(3)
-    graph.add_node(4)
-    graph.add_node(5)
-    graph.add_node(6)
+    graph = Graph(7)
 
-    graph.add_edge(1, 6)
-    graph.add_edge(1, 3)
-    graph.add_edge(2, 4)
-    graph.add_edge(4, 3)
-    graph.add_edge(6, 3)
+    graph.add_edge_undirect(1, 6)
+    graph.add_edge_undirect(1, 3)
+    graph.add_edge_undirect(2, 4)
+    graph.add_edge_undirect(4, 3)
+    graph.add_edge_undirect(6, 3)
 
     graph.print_graph()
+
+    print(graph.search_DFS_recur(4))
