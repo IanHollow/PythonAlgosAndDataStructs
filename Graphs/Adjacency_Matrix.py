@@ -1,6 +1,3 @@
-from lib2to3.pgen2 import grammar
-
-
 class Node:
     def __init__(self, data):
         self.data = data
