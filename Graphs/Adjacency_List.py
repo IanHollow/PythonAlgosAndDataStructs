@@ -1,4 +1,7 @@
-class AdjNode:
+import queue
+
+
+class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
@@ -12,7 +15,7 @@ class Graph:
         if from_vertex > len(self.graph)-1 or to_vertex > len(self.graph)-1:
             raise IndexError("to_vertex or from_vertex doesn't exist")
 
-        node = AdjNode(to_vertex)
+        node = Node(to_vertex)
         node.next = self.graph[from_vertex]
         self.graph[from_vertex] = node
 
@@ -20,11 +23,11 @@ class Graph:
         if from_vertex > len(self.graph)-1 or to_vertex > len(self.graph)-1:
             raise IndexError("to_vertex or from_vertex doesn't exist")
 
-        node = AdjNode(to_vertex)
+        node = Node(to_vertex)
         node.next = self.graph[from_vertex]
         self.graph[from_vertex] = node
 
-        node = AdjNode(from_vertex)
+        node = Node(from_vertex)
         node.next = self.graph[to_vertex]
         self.graph[to_vertex] = node
 
@@ -57,9 +60,11 @@ class Graph:
         dfs_result = []
 
         for _ in range(len(self.graph)):
+            # Remove Nodes already visited
             while len(stack) > 0 and visited[stack[len(stack)-1]]:
                 stack.pop()
 
+            # If No more connected Nodes find next Node
             if len(stack) == 0:
                 while visited[start_vertex]:
                     start_vertex += 1
@@ -68,10 +73,12 @@ class Graph:
 
                 stack.append(start_vertex)
 
+            # Visit Node
             start_vertex = stack.pop()
             visited[start_vertex] = True
             dfs_result.append(start_vertex)
 
+            # Process Node
             current_node = self.graph[start_vertex]
             while current_node is not None:
                 if not visited[current_node.data]:
@@ -80,8 +87,37 @@ class Graph:
 
         return dfs_result
 
-    def search_BFS(self):
-        pass
+    def search_BFS(self, start_vertex) -> list:
+        tail = Node(start_vertex)
+        queue = tail
+        visited = [False] * len(self.graph)
+        bfs_result = []
+
+        for _ in range(len(self.graph)):
+            while queue is not None and visited[queue.data]:
+                queue = queue.next
+
+            if queue == None:
+                while visited[start_vertex]:
+                    start_vertex += 1
+                    if start_vertex > len(self.graph)-1:
+                        start_vertex = 0
+
+                tail = Node(start_vertex)
+                queue = tail
+
+            visited[queue.data] = True
+            bfs_result.append(queue.data)
+            current_node = self.graph[queue.data]
+            while current_node is not None:
+                if not visited[current_node.data]:
+                    tail.next = current_node
+                    tail = current_node
+                current_node = current_node.next
+
+            queue = queue.next
+
+        return bfs_result
 
     def print_graph(self):
         for i in range(len(self.graph)):
@@ -107,3 +143,5 @@ if __name__ == "__main__":
     print(graph.search_DFS_recur(4))
 
     print(graph.search_DFS_iter(4))
+
+    print(graph.search_BFS(4))
